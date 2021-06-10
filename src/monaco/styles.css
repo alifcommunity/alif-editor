@@ -1,0 +1,23 @@
+.view-line {
+  padding-right: 30px;
+}
+
+.view-lines,
+.view-line,
+.has-selection,
+.mtk1,
+.view-line span,
+.view-line span span {
+  direction: rtl;
+  text-align: right;
+}
+
+.monaco-editor {
+  min-height: 70vh;
+  direction: ltr;
+  outline: 1px solid gray;
+}
+
+.monaco-editor-container {
+  height: 70vh;
+}

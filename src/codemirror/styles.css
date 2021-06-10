@@ -1,0 +1,8 @@
+.CodeMirror {
+  min-height: 70vh;
+  font-family: "GE Dinar One Medium", monospace;
+  border: 0.5em solid black;
+  margin-bottom: 0.5em;
+  font-weight: 300;
+  font-size: 2em;
+}
