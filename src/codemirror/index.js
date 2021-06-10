@@ -1,7 +1,7 @@
 import "./styles.css";
 import "codemirror/lib/codemirror.css";
 import "codemirror/addon/hint/show-hint.css";
-import "codemirror/theme/dracula.css";
+import "codemirror/theme/darcula.css";
 
 import CodeMirror from "codemirror";
 import "codemirror/mode/javascript/javascript.js";
