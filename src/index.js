@@ -19,7 +19,7 @@ const alifExample2 = fs.readFileSync(
   "utf8"
 );
 
-const alifExamples = [alifExample0];
+const alifExamples = [alifExample2];
 // const alifExamples = [alifExample0, alifExample1, alifExample2];
 
 const codemirrorEditorsContainer =
@@ -31,7 +31,7 @@ function initEditors() {
     CodeMirror(codemirrorEditorsContainer, {
       value: alifCode,
       lineNumbers: true,
-      lineWrapping: true,
+      // lineWrapping: true,
       direction: "rtl",
       rtlMoveVisually: true,
       styleActiveLine: true,
