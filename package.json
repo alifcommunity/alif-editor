@@ -9,6 +9,9 @@
   },
   "dependencies": {
     "@babel/helper-validator-identifier": "7.14.0",
+    "@codemirror/basic-setup": "^0.18.2",
+    "@codemirror/highlight": "^0.18.4",
+    "@codemirror/history": "^0.18.1",
     "codemirror": "5.61.1",
     "monaco-editor": "0.24.0",
     "parcel-bundler": "^1.6.1"

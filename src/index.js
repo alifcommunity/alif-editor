@@ -1,6 +1,7 @@
 import "./styles.css";
 import "./monaco";
 import "./codemirror";
+import codemirror5KeyBindings from "./codemirror/key-bindings.js";
 import CodeMirror from "codemirror";
 import * as monaco from "monaco-editor";
 
@@ -19,112 +20,103 @@ const alifExample2 = fs.readFileSync(
   "utf8"
 );
 
-const alifExamples = [alifExample2];
-// const alifExamples = [alifExample0, alifExample1, alifExample2];
+const alifExamples = [alifExample0, alifExample1, alifExample2];
+let currentExample =
+  alifExamples[Number(document.getElementById("example-num").value)];
 
-const codemirrorEditorsContainer =
-  document.getElementById("codemirror-editors");
-const monacoEditorsContainer = document.getElementById("monaco-editors");
+const editors = {
+  codemirror: {
+    container: document.querySelector("#codemirror-editor > .editor-container"),
+    radio: document.getElementById("codemirror-radio"),
+    inited: false,
+    initit: initCodemirrorEditor,
+  },
+  codemirror_V6: {
+    container: document.querySelector(
+      "#codemirror-v6-editor > .editor-container"
+    ),
+    radio: document.getElementById("codemirror-v6-radio"),
+    inited: false,
+    initit: initCodemirrorEditor_V6,
+  },
+  monaco: {
+    container: document.querySelector("#monaco-editor > .editor-container"),
+    radio: document.getElementById("monaco-radio"),
+    inited: false,
+    initit: initMonacoEditor,
+  },
+};
 
-function initEditors() {
-  alifExamples.forEach((alifCode) => {
-    CodeMirror(codemirrorEditorsContainer, {
-      value: alifCode,
-      lineNumbers: true,
-      // lineWrapping: true,
-      direction: "rtl",
-      rtlMoveVisually: true,
-      styleActiveLine: true,
-      autoCloseBrackets: true,
-      indentUnit: 4,
-      matchBrackets: true,
-      mode: "alif",
-      theme: "darcula",
-      indentWithTabs: false,
-      smartIndent: true,
-      extraKeys: {
-        "Ctrl-Space": "autocomplete",
-        Tab: (cm) => {
-          if (cm.getMode().name === "null") {
-            cm.execCommand("insertTab");
-          } else {
-            if (cm.somethingSelected()) {
-              cm.execCommand("indentMore");
-            } else {
-              cm.execCommand("insertSoftTab");
-            }
-          }
-        },
-        Backspace: (cm) => {
-          if (!cm.somethingSelected()) {
-            let cursorsPos = cm
-              .listSelections()
-              .map((selection) => selection.anchor);
-            let indentUnit = cm.options.indentUnit;
-            let shouldDelChar = false;
-            for (let cursorIndex in cursorsPos) {
-              let cursorPos = cursorsPos[cursorIndex];
-              let lineContent = cm.doc.getLine(cursorPos.line);
-              let indentation = lineContent.match(/^\s+/)?.[0].length ?? 0;
-              // let indentation = cm.getStateAfter(cursorPos.line).indented;
-              if (
-                !(
-                  indentation !== 0 &&
-                  cursorPos.ch <= indentation &&
-                  cursorPos.ch % indentUnit === 0
-                )
-              ) {
-                shouldDelChar = true;
-              }
-            }
-            if (!shouldDelChar) {
-              cm.execCommand("indentLess");
-            } else {
-              cm.execCommand("delCharBefore");
-            }
-          } else {
-            cm.execCommand("delCharBefore");
-          }
-        },
-        "Shift-Tab": (cm) => cm.execCommand("indentLess")
-      }
-    });
-
-    const container = document.createElement("div");
-    container.classList.add("monaco-editor-container");
-    monacoEditorsContainer.append(container);
-    monaco.editor.create(container, {
-      value: alifCode,
-    });
+function initCodemirrorEditor() {
+  CodeMirror(editors.codemirror.container, {
+    value: currentExample,
+    lineNumbers: true,
+    // lineWrapping: true,
+    direction: "rtl",
+    rtlMoveVisually: true,
+    styleActiveLine: true,
+    autoCloseBrackets: true,
+    indentUnit: 4,
+    matchBrackets: true,
+    mode: "alif",
+    theme: "darcula",
+    indentWithTabs: false,
+    smartIndent: true,
+    extraKeys: codemirror5KeyBindings,
   });
 }
 
-function afterLoaded() {
-  if (document.getElementById("codemirror-cb").checked) {
-    codemirrorEditorsContainer.style.display = "block";
-    monacoEditorsContainer.style.display = "none";
-  } else {
-    codemirrorEditorsContainer.style.display = "none";
-    monacoEditorsContainer.style.display = "block";
+function initCodemirrorEditor_V6() {}
+
+function initMonacoEditor() {
+  monaco.editor.create(editors.monaco.container, {});
+}
+
+function setExampleCode() {
+  if (editors.codemirror.radio.checked);
+}
+
+function init() {
+  // -------------------------------
+  // choose an editor
+  // -------------------------------
+
+  function radioChecked(editor) {
+    const { container, initit, radio } = editor;
+    if (radio.checked) {
+      Object.values(editors).forEach(
+        (e) => (e.container.parentElement.style.display = "none")
+      );
+      container.parentElement.style.display = "block";
+      if (!editor.inited) {
+        editor.inited = true;
+        container.dataset.inited = "true";
+        initit();
+      }
+    }
   }
 
-  document.getElementById("codemirror-cb").addEventListener("change", (e) => {
-    if (e.target.checked) {
-      codemirrorEditorsContainer.style.display = "block";
-      monacoEditorsContainer.style.display = "none";
-    }
-  });
+  for (let editor in editors) {
+    editor = editors[editor]
+    radioChecked(editor);
+    editor.radio.addEventListener("change", () => {
+      radioChecked(editor);
+    });
+  }
 
-  document.getElementById("monaco-cb").addEventListener("change", (e) => {
-    if (e.target.checked) {
-      monacoEditorsContainer.style.display = "block";
-      codemirrorEditorsContainer.style.display = "none";
-    }
-  });
+  // -------------------------------
+  // choose an example
+  // -------------------------------
+
+  const exampleNum = document.getElementById("example-num");
+  exampleNum.onchange = () => {
+    const num = Number(exampleNum.value);
+    currentExample = alifExamples[num];
+    console.log(`اختيار المثال ${num}`);
+    setExampleCode();
+  };
 }
 
-afterLoaded();
-
-initEditors();
+init();
 
 // module?.hot.decline();
