@@ -1,6 +1,6 @@
-import "./styles.css";
 import "./monaco";
 import "./codemirror";
+import "./styles.css";
 import codemirror5KeyBindings from "./codemirror/key-bindings.js";
 import CodeMirror from "codemirror";
 import * as monaco from "monaco-editor";

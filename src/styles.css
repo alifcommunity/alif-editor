@@ -1,3 +1,10 @@
+@font-face {
+  font-family: "Noto Kufi Arabic";
+  src: url("../fonts/Noto_Kufi_Arabic/NotoKufiArabic-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 *,
 *::after,
 *::before {
@@ -5,12 +12,13 @@
 }
 
 body {
-  font-family: "GE Dinar One Medium", monospace;
   margin: 0;
+  height: 100vh;
 }
 
-.monaco-editors {
-  margin-top: 2em;
+article > .editor-container, .CodeMirror {
+  width: 100%;
+  font-family: "Noto Kufi Arabic", monospace;
 }
 
 header {
