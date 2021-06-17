@@ -9,6 +9,9 @@
 <div dir=ltr>
 
 ```bash
+npm install -g yarn
+npm install -g parcel-bundler
+
 yarn       # لتصطيب الاعتماديات
 yarn start # لتشغيل الأكواد
 ```
