@@ -1,6 +1,7 @@
 @font-face {
   font-family: "Noto Kufi Arabic";
-  src: url("../fonts/Noto_Kufi_Arabic/NotoKufiArabic-Regular.ttf") format("truetype");
+  src: url("../fonts/Noto_Kufi_Arabic/NotoKufiArabic-Regular.ttf")
+    format("truetype");
   font-weight: normal;
   font-style: normal;
 }
@@ -14,13 +15,32 @@
 body {
   margin: 0;
   height: 100vh;
-}
-
-article > .editor-container, .CodeMirror {
-  width: 100%;
-  font-family: "Noto Kufi Arabic", monospace;
+  display: flex;
+  flex-flow: column nowrap;
 }
 
 header {
   direction: rtl;
+}
+
+article {
+  height: 100%;
+  width: 100%;
+}
+
+article > .editor-container,
+.CodeMirror {
+  height: 100%;
+}
+
+.cm-editor {
+  height: 100%;
+  direction: rtl;
+}
+
+.cm-editor,
+.cm-scroller,
+.CodeMirror,
+article > .editor-container {
+  font-family: "Noto Kufi Arabic", monospace !important;
 }

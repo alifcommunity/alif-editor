@@ -24,7 +24,7 @@ const tokens = [
   "إرجاع"
 ];
 
-CodeMirror.defineSimpleMode("alif", {
+export const alifSimpleModeStates = {
   start: [
     {
       regex: /_ج_/,
@@ -69,6 +69,8 @@ CodeMirror.defineSimpleMode("alif", {
     dontIndentStates: ["comment"],
     lineComment: "--"
   }
-});
+}
+
+CodeMirror.defineSimpleMode("alif", alifSimpleModeStates);
 
 CodeMirror.defineMIME("text/alif", "alif");

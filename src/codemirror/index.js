@@ -1,4 +1,5 @@
-import "./styles.css";
+// Alif Codemirror Editor Component
+
 import "codemirror/lib/codemirror.css";
 import "codemirror/addon/hint/show-hint.css";
 import "codemirror/theme/darcula.css";
@@ -16,8 +17,32 @@ import "codemirror/addon/fold/brace-fold.js";
 import "codemirror/addon/fold/xml-fold.js";
 import "codemirror/addon/fold/indent-fold.js";
 
+import keyBindings from "./key-bindings.js";
 import "./alif-mode.js";
+import codemirror from "codemirror";
 
 CodeMirror.commands.autocomplete = function (cm) {
   cm.showHint({ hint: CodeMirror.hint.anyword });
 };
+
+export default function AlifCodemirrorEditor(options) {
+  const { parent, value } = options;
+  if (!(this instanceof AlifCodemirrorEditor))
+    return new AlifCodemirrorEditor(options);
+  this.__proto__ = CodeMirror(parent, {
+    value,
+    lineNumbers: true,
+    // lineWrapping: true,
+    direction: "rtl",
+    rtlMoveVisually: true,
+    styleActiveLine: true,
+    autoCloseBrackets: true,
+    indentUnit: 4,
+    matchBrackets: true,
+    mode: "alif",
+    theme: "darcula",
+    indentWithTabs: false,
+    smartIndent: true,
+    extraKeys: keyBindings,
+  });
+}
