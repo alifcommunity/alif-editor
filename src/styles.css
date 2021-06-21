@@ -31,6 +31,13 @@ article {
 article > .editor-container,
 .CodeMirror {
   height: 100%;
+  position: relative;
+}
+
+article > .editor-container.loading::before {
+  content: "LOADING...";
+  position: absolute;
+  inset: 0;
 }
 
 .cm-editor {

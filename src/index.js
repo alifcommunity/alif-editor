@@ -1,26 +1,7 @@
-import "./monaco";
-import * as monaco from "monaco-editor";
-import AlifCodemirrorEditor from "./codemirror";
-import AlifCodemirrorEditor_V6 from "./codemirror-v6";
+import "regenerator-runtime/runtime.js";
+import alifExamples from "./alif-examples";
 import "./styles.css";
-import fs from "fs";
 
-const alifExample0 = fs.readFileSync(
-  __dirname + "/alif-examples/0.ألف",
-  "utf8"
-);
-
-const alifExample1 = fs.readFileSync(
-  __dirname + "/alif-examples/1.ألف",
-  "utf8"
-);
-
-const alifExample2 = fs.readFileSync(
-  __dirname + "/alif-examples/2.ألف",
-  "utf8"
-);
-
-const alifExamples = [alifExample0, alifExample1, alifExample2];
 let currentExample =
   alifExamples[Number(document.getElementById("example-num").value)];
 
@@ -44,29 +25,37 @@ const editors = {
   },
 };
 
-function initCodemirrorEditor() {
+async function initCodemirrorEditor() {
+  editors.codemirror.container.classList.add("loading");
+  const AlifCodemirrorEditor = (await import("./codemirror")).default;
   const component = new AlifCodemirrorEditor({
     parent: editors.codemirror.container,
     value: currentExample,
   });
+  editors.codemirror.container.classList.remove("loading");
   editors.codemirror.component = component;
   return component;
 }
 
-function initCodemirrorEditor_V6() {
+async function initCodemirrorEditor_V6() {
+  editors.codemirror_V6.container.classList.add("loading");
+  const AlifCodemirrorEditor_V6 = (await import("./codemirror-v6")).default;
   const component = new AlifCodemirrorEditor_V6({
     parent: editors.codemirror_V6.container,
     value: currentExample,
   });
+  editors.codemirror_V6.container.classList.remove("loading");
   editors.codemirror_V6.component = component;
   return component;
 }
 
-function initMonacoEditor() {
-  return (editors.monaco.component = monaco.editor.create(
-    editors.monaco.container,
-    {}
-  ));
+async function initMonacoEditor() {
+  editors.monaco.container.classList.add("loading");
+  const monaco = await import("monaco-editor");
+  const component = monaco.editor.create(editors.monaco.container, {});
+  editors.monaco.container.classList.remove("loading");
+  editors.monaco.component = component;
+  return component;
 }
 
 function setExampleCode(code = currentExample) {
@@ -106,6 +95,8 @@ function init() {
         editor.inited = true;
         container.dataset.inited = "true";
         initit();
+      } else {
+        setExampleCode();
       }
     }
   }

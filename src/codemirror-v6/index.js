@@ -5,9 +5,9 @@ import { StreamLanguage } from "@codemirror/stream-parser";
 import { javascript } from "@codemirror/lang-javascript";
 // import { javascript } from "@codemirror/legacy-modes/mode/javascript";
 import { simpleMode } from "@codemirror/legacy-modes/mode/simple-mode";
-import { alifSimpleModeStates } from "../codemirror/alif-mode";
+import alifSimpleModeStates from "../codemirror/alif-simple-mode-states";
 
-const arNums = ["٠", "١", "٢", "٣", "٤", "٤", "٥", "٦", "٧", "٨", "٩"];
+const arNums = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
 function toArNum(num) {
   return num.toString().replace(/\d/g, (match) => {
     return arNums[parseInt(match)];
@@ -25,7 +25,7 @@ export default function AlifCodemirrorEditor_V6(options) {
       extensions: [
         basicSetup,
         // oneDark,
-        lineNumbers({ formatNumber: (lineNo, state) => toArNum(lineNo) }),
+        lineNumbers({ formatNumber: (lineNo) => toArNum(lineNo) }),
         javascript(),
         // StreamLanguage.define(javascript),
         StreamLanguage.define(simpleMode(alifSimpleModeStates)),
