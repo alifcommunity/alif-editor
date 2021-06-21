@@ -1,9 +1,10 @@
-import { EditorState, EditorView, basicSetup } from "@codemirror/basic-setup";
-// import { oneDark } from "@codemirror/theme-one-dark";
+import { EditorState, basicSetup } from "@codemirror/basic-setup";
+import { defaultTabBinding } from "@codemirror/commands";
+import { EditorView, keymap } from "@codemirror/view";
+import { oneDark } from "@codemirror/theme-one-dark";
 import { lineNumbers } from "@codemirror/gutter";
 import { StreamLanguage } from "@codemirror/stream-parser";
 import { javascript } from "@codemirror/lang-javascript";
-// import { javascript } from "@codemirror/legacy-modes/mode/javascript";
 import { simpleMode } from "@codemirror/legacy-modes/mode/simple-mode";
 import alifSimpleModeStates from "../codemirror/alif-simple-mode-states";
 
@@ -25,9 +26,9 @@ export default function AlifCodemirrorEditor_V6(options) {
       extensions: [
         basicSetup,
         // oneDark,
+        keymap.of([defaultTabBinding]),
         lineNumbers({ formatNumber: (lineNo) => toArNum(lineNo) }),
-        javascript(),
-        // StreamLanguage.define(javascript),
+        // javascript(),
         StreamLanguage.define(simpleMode(alifSimpleModeStates)),
       ],
     }),
