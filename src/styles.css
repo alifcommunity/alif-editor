@@ -6,6 +6,21 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "Thabit";
+  src: url("../fonts/Thabit.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Kawakab";
+  src: url("../fonts/kawkab-mono-0.501/KawkabMono-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+
 *,
 *::after,
 *::before {
@@ -26,22 +41,29 @@ header {
 article {
   height: 100%;
   width: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
 }
 
-article > .editor-container,
-.CodeMirror {
+article > .editor-container {
   height: 100%;
+  width: 100%;
   position: relative;
+}
+
+article > .editor-container > div {
+  position: absolute !important;
+  inset: 0;
 }
 
 article > .editor-container.loading::before {
   content: "LOADING...";
   position: absolute;
+  text-align: center;
   inset: 0;
 }
 
 .cm-editor {
-  height: 100%;
   direction: rtl;
 }
 
@@ -49,5 +71,10 @@ article > .editor-container.loading::before {
 .cm-scroller,
 .CodeMirror,
 article > .editor-container {
-  font-family: "Noto Kufi Arabic", monospace !important;
+  font-family: "Kawakab", "Noto Kufi Arabic", monospace !important;
+}
+
+
+.cm-scroller {
+  line-height: normal !important;
 }

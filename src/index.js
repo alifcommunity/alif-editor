@@ -2,28 +2,32 @@ import "regenerator-runtime/runtime.js";
 import alifExamples from "./alif-examples";
 import "./styles.css";
 
-let currentExample =
-  alifExamples[Number(document.getElementById("example-num").value)];
+let currentExample = alifExamples[Number(sel("#example-num").value)];
 
 const editors = {
   codemirror: {
-    container: document.querySelector("#codemirror-editor > .editor-container"),
-    radio: document.getElementById("codemirror-radio"),
+    parent: sel("#codemirror-editor"),
+    container: sel("#codemirror-editor .editor-container"),
+    radio: sel("#codemirror-radio"),
     initit: initCodemirrorEditor,
   },
   codemirror_V6: {
-    container: document.querySelector(
-      "#codemirror-v6-editor > .editor-container"
-    ),
-    radio: document.getElementById("codemirror-v6-radio"),
+    parent: sel("#codemirror-v6-editor"),
+    container: sel("#codemirror-v6-editor .editor-container"),
+    radio: sel("#codemirror-v6-radio"),
     initit: initCodemirrorEditor_V6,
   },
   monaco: {
-    container: document.querySelector("#monaco-editor > .editor-container"),
-    radio: document.getElementById("monaco-radio"),
+    parent: sel("#monaco-editor"),
+    container: sel("#monaco-editor .editor-container"),
+    radio: sel("#monaco-radio"),
     initit: initMonacoEditor,
   },
 };
+
+function sel(selector) {
+  return document.querySelector(selector);
+}
 
 async function initCodemirrorEditor() {
   editors.codemirror.container.classList.add("loading");
@@ -79,21 +83,21 @@ function init() {
   // -------------------------------
 
   function radioChecked(editor) {
-    const { container, initit, radio } = editor;
+    const { parent, initit, radio } = editor;
     if (radio.checked) {
       // hide all, deactivate
       Object.values(editors).forEach((e) => {
         e.active = false;
-        e.container.parentElement.style.display = "none";
+        e.parent.style.display = "none";
       });
       // show me only
-      container.parentElement.style.display = "block";
+      parent.style.display = "grid";
       // activate
       editor.active = true;
       // init if not already
       if (!editor.inited) {
         editor.inited = true;
-        container.dataset.inited = "true";
+        parent.dataset.inited = "true";
         initit();
       } else {
         setExampleCode();
@@ -113,7 +117,7 @@ function init() {
   // choose an example
   // -------------------------------
 
-  const exampleNum = document.getElementById("example-num");
+  const exampleNum = sel("#example-num");
   exampleNum.onchange = () => {
     const num = Number(exampleNum.value);
     currentExample = alifExamples[num];

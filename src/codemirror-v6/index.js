@@ -25,7 +25,7 @@ export default function AlifCodemirrorEditor_V6(options) {
       doc: value,
       extensions: [
         basicSetup,
-        // oneDark,
+        oneDark,
         keymap.of([defaultTabBinding]),
         lineNumbers({ formatNumber: (lineNo) => toArNum(lineNo) }),
         // javascript(),
