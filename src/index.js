@@ -56,7 +56,12 @@ async function initCodemirrorEditor_V6() {
 async function initMonacoEditor() {
   editors.monaco.container.classList.add("loading");
   const monaco = await import("monaco-editor");
+  // lazy load monaco-editor package
   const component = monaco.editor.create(editors.monaco.container, {});
+  // change theme
+  const themeData = await import('monaco-themes/themes/Monokai.json')
+  monaco.editor.defineTheme('monokai', themeData);
+  monaco.editor.setTheme('monokai');
   editors.monaco.container.classList.remove("loading");
   editors.monaco.component = component;
   return component;

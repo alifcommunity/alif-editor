@@ -45,10 +45,22 @@ article {
   grid-template-rows: auto 1fr;
 }
 
-article > .editor-container {
-  height: 100%;
-  width: 100%;
-  position: relative;
+article p {
+  text-align: center;
+  font-size: small;
+  opacity: 0.4;
+}
+
+article > .editor-container { position: relative; }
+@media screen and (min-width: 700px) {
+  article > .editor-container {
+    margin: 2em;
+    box-shadow: 0px -2px 20px 0 grey;
+    border: 1px aquamarine;
+    border-radius: 1em;
+    overflow: hidden;
+    position: relative;
+  }
 }
 
 article > .editor-container > div {
@@ -57,7 +69,7 @@ article > .editor-container > div {
 }
 
 article > .editor-container.loading::before {
-  content: "LOADING...";
+  content: "جاري التحميل...";
   position: absolute;
   text-align: center;
   inset: 0;
@@ -73,7 +85,6 @@ article > .editor-container.loading::before {
 article > .editor-container {
   font-family: "Kawakab", "Noto Kufi Arabic", monospace !important;
 }
-
 
 .cm-scroller {
   line-height: normal !important;

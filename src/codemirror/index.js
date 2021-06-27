@@ -45,4 +45,6 @@ export default function AlifCodemirrorEditor(options) {
     smartIndent: true,
     extraKeys: keyBindings,
   });
+
+  this.setSize("100%", "100%");
 }

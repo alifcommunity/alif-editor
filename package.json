@@ -17,6 +17,7 @@
     "@codemirror/theme-one-dark": "^0.18.1",
     "codemirror": "5.61.1",
     "monaco-editor": "0.24.0",
+    "monaco-themes": "^0.3.3",
     "parcel-bundler": "^1.6.1",
     "regenerator-runtime": "^0.13.7"
   },
