@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "start": "parcel index.html --open",
-    "build": "parcel build index.html"
+    "build": "parcel build index.html --public-url ./ # the repo name"
   },
   "dependencies": {
     "@babel/helper-validator-identifier": "7.14.0",
