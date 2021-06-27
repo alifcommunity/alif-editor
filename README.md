@@ -1,7 +1,9 @@
 <div dir=rtl>
 
-# محرر ألف
-
+# محرر ألف [![البناء والنشر](https://github.com/alifcommunity/alif-editor/actions/workflows/build-and-deploy.yml/badge.svg)](https://github.com/alifcommunity/alif-editor/actions/workflows/build-and-deploy.yml)
+  
+https://alifcommunity.github.io/alif-editor/
+  
 هنا يوجد كود محرر ألف، الذي يمكن استخدامه ضمن تطبيقات عديدة مثل بيئة تطوير عن طريق صنع تطبيق سطح المكتب ب electron، أو عن طريق تشغيل بيئة التطوير على المتصفح مباشرة.
 
 ## لقطات شاشة
