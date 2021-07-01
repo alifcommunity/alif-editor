@@ -7,6 +7,7 @@
   </head>
 
   <body>
+
     <header>
       <input type="radio" id="codemirror-radio" name="editor-type" />
       <label for="codemirror-radio">محررات codemirror</label>
@@ -16,23 +17,36 @@
       <label for="monaco-radio">محررات monaco</label>
       | <label for"example-num">رقم المثال</label>
       <select id="example-num">
+        <option selected value="-1">...</option>
         <option value="0">0</option>
         <option value="1">1</option>
-        <option selected value="2">2</option>
+        <option value="2">2</option>
       </select>
     </header>
-    <article id="codemirror-editor">
-      <p>CodeMirror</p>
-      <div class="editor-container"></div>
-    </article>
-    <article id="codemirror-v6-editor">
-      <p>CodeMirror V6</p>
-      <div class="editor-container"></div>
-    </article>
-    <article id="monaco-editor">
-      <p>Monaco</p>
-      <div class="editor-container"></div>
-    </article>
+
+    <section class="editors">
+      <div id="codemirror-editor">
+        <p>CodeMirror</p>
+        <div class="editor-container"></div>
+      </div>
+      <div id="codemirror-v6-editor">
+        <p>CodeMirror V6</p>
+        <div class="editor-container"></div>
+      </div>
+      <div id="monaco-editor">
+        <p>Monaco</p>
+        <div class="editor-container"></div>
+      </div>
+    </section>
+
+    <div id="error">
+      <p></p> 
+      <div>
+        <button id="error-retry">حاول مجددا</button>
+        <button id="error-reload" onclick="location.reload()">تحديث الصفحة</button>
+      </div>
+    </div>
+
     <script src="src/index.js"></script>
   </body>
 </html>

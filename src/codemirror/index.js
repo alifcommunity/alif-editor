@@ -26,11 +26,15 @@ CodeMirror.commands.autocomplete = function (cm) {
 };
 
 export default function AlifCodemirrorEditor(options) {
-  const { parent, value } = options;
+  const { parent, value, onCodeChange } = options;
   if (!(this instanceof AlifCodemirrorEditor))
     return new AlifCodemirrorEditor(options);
+  // const textarea = document.getElementById("RichTextArea");
+  // // so explicitly assign value to textarea object.
+  // textarea.value = value ?? "";
+
   this.__proto__ = CodeMirror(parent, {
-    value,
+    value: value ?? "",
     lineNumbers: true,
     // lineWrapping: true,
     direction: "rtl",
@@ -47,4 +51,5 @@ export default function AlifCodemirrorEditor(options) {
   });
 
   this.setSize("100%", "100%");
+  onCodeChange && this.on("change", (cm) => onCodeChange(cm.getValue()));
 }

@@ -16,7 +16,7 @@ function toArNum(num) {
 }
 
 export default function AlifCodemirrorEditor_V6(options) {
-  let { parent, value } = options;
+  let { parent, value, onCodeChange } = options;
   if (!(this instanceof AlifCodemirrorEditor_V6))
     return new AlifCodemirrorEditor_V6(options); // instantiate with `new`
 
@@ -24,10 +24,14 @@ export default function AlifCodemirrorEditor_V6(options) {
     state: EditorState.create({
       doc: value,
       extensions: [
+        onCodeChange && EditorView.updateListener.of(update => {
+          onCodeChange(update.state.doc.toString());
+        }),
         basicSetup,
         oneDark,
         keymap.of([defaultTabBinding]),
-        lineNumbers({ formatNumber: (lineNo) => toArNum(lineNo) }),
+        lineNumbers({ formatNumber: toArNum }),
+        // FIXME: to overrides alif mode, I want to use js mode it its position
         // javascript(),
         StreamLanguage.define(simpleMode(alifSimpleModeStates)),
       ],

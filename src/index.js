@@ -2,7 +2,8 @@ import "regenerator-runtime/runtime.js";
 import alifExamples from "./alif-examples";
 import "./styles.css";
 
-let currentExample = alifExamples[Number(sel("#example-num").value)];
+const LOCALE_STORAGE_CODE_KEY = "alif-code";
+let currentExampleNum = -1;
 
 const editors = {
   codemirror: {
@@ -34,7 +35,7 @@ async function initCodemirrorEditor() {
   const AlifCodemirrorEditor = (await import("./codemirror")).default;
   const component = new AlifCodemirrorEditor({
     parent: editors.codemirror.container,
-    value: currentExample,
+    onCodeChange
   });
   editors.codemirror.container.classList.remove("loading");
   editors.codemirror.component = component;
@@ -46,7 +47,7 @@ async function initCodemirrorEditor_V6() {
   const AlifCodemirrorEditor_V6 = (await import("./codemirror-v6")).default;
   const component = new AlifCodemirrorEditor_V6({
     parent: editors.codemirror_V6.container,
-    value: currentExample,
+    onCodeChange
   });
   editors.codemirror_V6.container.classList.remove("loading");
   editors.codemirror_V6.component = component;
@@ -59,20 +60,27 @@ async function initMonacoEditor() {
   // lazy load monaco-editor package
   const component = monaco.editor.create(editors.monaco.container, {});
   // change theme
-  const themeData = await import('monaco-themes/themes/Monokai.json')
-  monaco.editor.defineTheme('monokai', themeData);
-  monaco.editor.setTheme('monokai');
+  const themeData = await import("monaco-themes/themes/Monokai.json");
+  monaco.editor.defineTheme("monokai", themeData);
+  monaco.editor.setTheme("monokai");
   editors.monaco.container.classList.remove("loading");
   editors.monaco.component = component;
   return component;
 }
 
-function setExampleCode(code = currentExample) {
+function setExampleCode(code, isReadOnly) {
+  code =
+    code ?? currentExampleNum === -1
+      ? localStorage.getItem(LOCALE_STORAGE_CODE_KEY)
+      : alifExamples[currentExampleNum];
+  code = code ?? ""; // if nothing in the local storage
+  isReadOnly = isReadOnly ?? currentExampleNum !== -1;
   if (editors.codemirror_V6.active) {
     const view = editors.codemirror_V6.component;
     const length = view.state.doc.length;
+    const to = length === 0 ? 0 : length - 1;
     const transaction = view.state.update({
-      changes: { from: 0, to: length - 1, insert: code },
+      changes: { from: 0, to, insert: code },
     });
     view.dispatch(transaction);
   } else if (editors.codemirror.active) {
@@ -82,31 +90,59 @@ function setExampleCode(code = currentExample) {
   }
 }
 
+function onCodeChange(code) {
+  if (currentExampleNum === -1)
+    localStorage.setItem(LOCALE_STORAGE_CODE_KEY, code);
+}
+
+/**
+ * display an element in the DOM to show some error
+ */
+function setError(msg, retry) {
+  const errElm = document.querySelector("#error");
+  const msgElm = errElm.querySelector("#error p");
+  const retryBtn = errElm.querySelector("#error-retry");
+  errElm.style.display = "flex";
+  msgElm.innerText = msg;
+  retryBtn.onchange = () => {
+    errElm.style.display = "none";  
+    retry();
+  } 
+}
+
 function init() {
   // -------------------------------
   // choose an editor
   // -------------------------------
 
-  function radioChecked(editor) {
+  async function radioChecked(editor) {
     const { parent, initit, radio } = editor;
     if (radio.checked) {
-      // hide all, deactivate
+      // show me only as grid and hide all
       Object.values(editors).forEach((e) => {
         e.active = false;
         e.parent.style.display = "none";
       });
-      // show me only
       parent.style.display = "grid";
       // activate
       editor.active = true;
-      // init if not already
-      if (!editor.inited) {
-        editor.inited = true;
-        parent.dataset.inited = "true";
-        initit();
-      } else {
+
+      try {
+        // init it if not inited
+        if (!editor.inited) {
+          editor.inited = true;
+          parent.dataset.inited = "true";
+          await initit();
+        }
+
+        // set editor's code
         setExampleCode();
       }
+      catch (e) {
+        console.error(e);
+        setError(e.message, ()=> radioChecked(editor));
+      }
+
     }
   }
 
@@ -122,12 +158,17 @@ function init() {
   // choose an example
   // -------------------------------
 
-  const exampleNum = sel("#example-num");
-  exampleNum.onchange = () => {
-    const num = Number(exampleNum.value);
-    currentExample = alifExamples[num];
-    console.log(`اختيار المثال ${num}`);
-    setExampleCode();
+  const exampleNumElm = sel("#example-num");
+  currentExampleNum = Number(exampleNumElm.value);
+  exampleNumElm.onchange = () => {
+    currentExampleNum = Number(exampleNumElm.value);
+    console.log(`اختيار المثال ${currentExampleNum}`);
+    // set editor's code
+    try { setExampleCode(); }
+    catch (e) {
+      console.error(e);
+      setError(e.message, ()=> radioChecked(editor));
+    }
   };
 }
 
