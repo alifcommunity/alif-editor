@@ -30,13 +30,12 @@
 body {
   margin: 0;
   height: 100vh;
-  display: grid;
-  grid-template-rows: auto 1fr;
+  display: flex;
+  flex-flow: column nowrap;
 }
 
-header {
-  direction: rtl;
-}
+header { direction: rtl }
+.editors { flex-grow: 1; }
 
 #error {
   display: none;
@@ -64,30 +63,40 @@ header {
 /* ---------- code editors ---------- */
 /* ---------- .....👇..... ---------- */
 
-.editors > div {
+.editors section {
   height: 100%;
+  width: 100%;
   display: grid;
   grid-template-rows: auto 1fr;
 }
 
-.editors > div > p {
+.editors .description {
+  -webkit-margin-collapse: collapse;
   text-align: center;
   font-size: small;
   opacity: 0.4;
 }
 
 .editor-container > div {
-  height: 100%;
+  position: absolute !important;
+  inset: 0; 
+}
+
+.editor-container {
+  background-color: #e8e8e8;
+  background-image: radial-gradient(#b5b6c1 1.1px, #e8e8e8 1.1px);
+  background-size: 22px 22px;
+  position: relative;
 }
 
 @media screen and (min-width: 700px) {
   .editor-container {
     margin: 2em;
+    margin-top: 0;
     /* box-shadow: 0 0 0 2px aquamarine, 0px -2px 20px 0 grey; */
-    box-shadow: 0px -2px 20px 0 grey;
+    box-shadow: 0px -2px 20px 0 #afafaf;
     border-radius: 1em;
     overflow: hidden;
-    position: relative;
   }
 }
 

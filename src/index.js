@@ -24,6 +24,12 @@ const editors = {
     radio: sel("#monaco-radio"),
     initit: initMonacoEditor,
   },
+  highlight: {
+    parent: sel("#highlight-editor"),
+    container: sel("#highlight-editor .editor-container"),
+    radio: sel("#highlight-radio"),
+    initit: initHighlightEditor,
+  },
 };
 
 function sel(selector) {
@@ -55,16 +61,29 @@ async function initCodemirrorEditor_V6() {
 }
 
 async function initMonacoEditor() {
-  editors.monaco.container.classList.add("loading");
+  const editor = editors.monaco;
+  editor.container.classList.add("loading");
+
   const monaco = await import("monaco-editor");
   // lazy load monaco-editor package
-  const component = monaco.editor.create(editors.monaco.container, {});
+  const component = monaco.editor.create(editor.container, {});
   // change theme
   const themeData = await import("monaco-themes/themes/Monokai.json");
   monaco.editor.defineTheme("monokai", themeData);
   monaco.editor.setTheme("monokai");
-  editors.monaco.container.classList.remove("loading");
-  editors.monaco.component = component;
+  
+  editor.container.classList.remove("loading");
+  editor.component = component;
+  return component;
+}
+
+async function initHighlightEditor() {
+  const editor = editors.highlight;
+  editor.container.classList.add("loading");
+  const Highlight = (await import("./highlight")).default;
+  const component = new Highlight({ parent: editor.container });
+  editor.container.classList.remove("loading");
+  editor.component = component;
   return component;
 }
 
@@ -79,14 +98,13 @@ function setExampleCode(code, isReadOnly) {
     const view = editors.codemirror_V6.component;
     const length = view.state.doc.length;
     const to = length === 0 ? 0 : length - 1;
-    const transaction = view.state.update({
-      changes: { from: 0, to, insert: code },
-    });
+    const transaction = view.state.update({ changes: { from: 0, to, insert: code } });
     view.dispatch(transaction);
   } else if (editors.codemirror.active) {
     const component = editors.codemirror.component;
     component.setValue(code);
-  } else {
+  } else if (editors.highlight.active) {
+    editors.highlight.component.setCode(code);
   }
 }
 
