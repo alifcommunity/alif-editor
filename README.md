@@ -60,9 +60,11 @@ CodeMirror.defineSimpleMode("alif", 👉alifSimpleModeStates👈);
 
 ### ثانيا: codemirror v6
 
-قواعد التلوين تأخذ من نفس الملف، لكن الاختلاف يمكن في طريق الإعداد ومتطلبات التشغيل، إذ أنها تعمتد على الوحدات التي تستورد من خلال <span dir=ltr><code>import</code></span>، ثم يتم تَحزِيمُها في عن طريق مُحَزِّمات مثل parcel.
+> يمكنك الإطلاع على مشروع [alifstudio3](https://github.com/alifcommunity/alifstudio3) لرؤية مثال واقعي عن طريقة استخدام قواعد التلوين في مشروع آخر.
+  
+قواعد التلوين تأخذ من نفس الملف، لكن الاختلاف يكمن في طريق الإعداد ومتطلبات التشغيل، إذ أنها تعمتد على الوحدات التي تستورد من خلال <span dir=ltr><code>import</code></span>، ثم يتم تَحزِيمُها في عن طريق مُحَزِّمات مثل parcel.
 
-لإنشاء المشروع ثم البناء لتحل على الملفات جاهزة للاستخدام، إذا يتم البناء في مجلد build، ستكتب ال html الخاص بك في ملف <span dir=ltr><code>./index.html</code></span> الموجود في المسار الجذر، ثم تضيف ملف الجافاسكريبت الخاص بك الذي سيكون به الاستيراد، مثل:
+لإنشاء المشروع ثم البناء لتحصل على الملفات جاهزة للاستخدام، إذ يتم البناء في مجلد dist ستكتب ال html الخاص بك في ملف <span dir=ltr><code>./my-html-file.html</code></span> الموجود في المسار الجذر، ثم تضيف ملف الجافاسكريبت الخاص بك الذي سيكون به الاستيراد، مثل:
 
 <div dir=ltr>
 
@@ -74,14 +76,23 @@ CodeMirror.defineSimpleMode("alif", 👉alifSimpleModeStates👈);
 
 كود الجافاسكريبت الخاص بك <span dir=ltr><code>./my-javascript-file-that-conatins-imports.js</code></span>، سيكون مشابها للموجود في <span dir=ltr><code>src/codemirror-v6/index.js</code></span>.
 
-في النهاية ستقوم بالبناء وسينتج مجلد به ملف index.html مع باقي الملفات والأكواد، بحيث لو نقرت على ملف index.html وفتحته في المتصفح، ستجده يعمل دون الحاجة ل parcel أو npm أو yarn أو node. يمكنك أخذ المجلد الذي تم البناء فيه ووضعه في أي مكان أو استضافته وإعطاء نطاق له.
+في النهاية ستقوم بالبناء وسينتج مجلد به ملف <span dir=ltr><code>./dist/index.html</code></span> مع باقي الملفات والأكواد، بحيث لو نقرت على ملف index.html وفتحته في المتصفح، ستجده يعمل دون الحاجة ل parcel أو npm أو yarn أو node. يمكنك أخذ المجلد الذي تم البناء فيه ووضعه في أي مكان أو استضافته وإعطاء نطاق له.
 
 <div dir=ltr>
 
 ```bash
-# it will execute `parcel build index.html`
-# which by default builds into `./build`
-> yarn build
+# my-html-file.html contains <script> which src the js
+# file "./my-javascript-file-that-conatins-imports.js"
+  
+# parcel by default builds into `./dist`, but we can change it, for example to `my-dist`
+  
+# you can specify your library name if you want to use directly from the `window` object,
+# for example when "./my-javascript-file-that-conatins-imports.js" contains exports as well,
+# see `./alifstudio_data/src/index.js` in alifstudio3 repo, as example `export myFunction(){...}`
+# now you can use it from the window like this: `window.alif.myFunctionName()` or you can
+# simply use the function like this: `alif.myFunctionName()`
+
+> yarn parcel build ./my-html-file.html --out-dir ./my-dist --global alif
 ```
 
 </div>
